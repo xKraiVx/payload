@@ -1,21 +1,22 @@
-import path from 'path'
+import path from "path";
 
-import { payloadCloud } from '@payloadcms/plugin-cloud'
-import { postgresAdapter } from '@payloadcms/db-postgres'
-import { webpackBundler } from '@payloadcms/bundler-webpack'
-import { slateEditor } from '@payloadcms/richtext-slate'
-import { buildConfig } from 'payload/config'
-import seoPlugin from '@payloadcms/plugin-seo';
+import { payloadCloud } from "@payloadcms/plugin-cloud";
+import { postgresAdapter } from "@payloadcms/db-postgres";
+import { webpackBundler } from "@payloadcms/bundler-webpack";
+import { slateEditor } from "@payloadcms/richtext-slate";
+import { buildConfig } from "payload/config";
+import seoPlugin from "@payloadcms/plugin-seo";
 
-import Users from './collections/Users'
-import Pages from './collections/Pages'
-import Media from './collections/Media'
-import Posts from './collections/Posts'
-import Comments from './collections/Comments'
-import Options from './globals/Options'
-import HomePage from './globals/HomePage'
-import MainLayout from './globals/MainLayout'
-import Menus from './collections/Menus'
+import Users from "./collections/Users";
+import Pages from "./collections/Pages";
+import Media from "./collections/Media";
+import Posts from "./collections/Posts";
+import Comments from "./collections/Comments";
+import Menus from "./collections/Menus";
+import Options from "./globals/Options";
+import HomePage from "./globals/HomePage";
+import MainLayout from "./globals/MainLayout";
+import Cases from "./collections/Cases";
 
 export default buildConfig({
   admin: {
@@ -23,31 +24,27 @@ export default buildConfig({
     bundler: webpackBundler(),
   },
   editor: slateEditor({}),
-  collections: [Users, Pages, Media, Posts, Comments, Menus],
+  collections: [Users, Pages, Media, Posts, Comments, Menus, Cases],
   globals: [HomePage, Options, MainLayout],
   typescript: {
-    outputFile: path.resolve(__dirname, 'payload-types.ts'),
+    outputFile: path.resolve(__dirname, "payload-types.ts"),
   },
   graphQL: {
-    schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
+    schemaOutputFile: path.resolve(__dirname, "generated-schema.graphql"),
   },
   plugins: [
     payloadCloud(),
     seoPlugin({
-      collections: [
-        'pages',
-        'posts'
-      ],
-      globals: [
-        'homePage'
-      ],
-      uploadsCollection: 'media',
+      collections: ["pages", "posts"],
+      globals: ["homePage"],
+      uploadsCollection: "media",
       // generateTitle: ({ doc }) => `Website.com — ${doc.title.value}`,
       // generateDescription: ({ doc }) => doc.excerpt
-    })],
+    }),
+  ],
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI,
     },
   }),
-})
+});
